@@ -382,7 +382,7 @@ NSString *const SSZipArchiveErrorDomain = @"SSZipArchiveErrorDomain";
                     success = NO;
                     break;
                 }
-                NSLog(@"[SSZipArchive] Error: %@", err.localizedDescription);
+//                NSLog(@"[SSZipArchive] Error: %@", err.localizedDescription);
             }
             
             if ([fileManager fileExistsAtPath:fullPath] && !isDirectory && !overwrite) {
@@ -402,7 +402,7 @@ NSString *const SSZipArchiveErrorDomain = @"SSZipArchiveErrorDomain";
                             if (0 == fwrite(buffer, readBytes, 1, fp)) {
                                 if (ferror(fp)) {
                                     NSString *message = [NSString stringWithFormat:@"Failed to write file (check your free space)"];
-                                    NSLog(@"[SSZipArchive] %@", message);
+//                                    NSLog(@"[SSZipArchive] %@", message);
                                     success = NO;
                                     unzippingError = [NSError errorWithDomain:@"SSZipArchiveErrorDomain" code:SSZipArchiveErrorCodeFailedToWriteFile userInfo:@{NSLocalizedDescriptionKey: message}];
                                     break;
@@ -416,7 +416,7 @@ NSString *const SSZipArchiveErrorDomain = @"SSZipArchiveErrorDomain";
 
                     if (fp) {
                         if ([[[fullPath pathExtension] lowercaseString] isEqualToString:@"zip"]) {
-                            NSLog(@"Unzipping nested .zip file:  %@", [fullPath lastPathComponent]);
+//                            NSLog(@"Unzipping nested .zip file:  %@", [fullPath lastPathComponent]);
                             if ([self unzipFileAtPath:fullPath toDestination:[fullPath stringByDeletingLastPathComponent] overwrite:overwrite password:password error:nil delegate:nil]) {
                                 [[NSFileManager defaultManager] removeItemAtPath:fullPath error:nil];
                             }
@@ -434,7 +434,7 @@ NSString *const SSZipArchiveErrorDomain = @"SSZipArchiveErrorDomain";
                                 if (attr) {
                                     if ([fileManager setAttributes:attr ofItemAtPath:fullPath error:nil] == NO) {
                                         // Can't set attributes
-                                        NSLog(@"[SSZipArchive] Failed to set attributes - whilst setting modification date");
+//                                        NSLog(@"[SSZipArchive] Failed to set attributes - whilst setting modification date");
                                     }
                                 }
                             }
@@ -454,7 +454,7 @@ NSString *const SSZipArchiveErrorDomain = @"SSZipArchiveErrorDomain";
                                 // Update attributes
                                 if ([fileManager setAttributes:attrs ofItemAtPath:fullPath error:nil] == NO) {
                                     // Unable to set the permissions attribute
-                                    NSLog(@"[SSZipArchive] Failed to set attributes - whilst setting permissions");
+//                                    NSLog(@"[SSZipArchive] Failed to set attributes - whilst setting permissions");
                                 }
                             }
                         }
@@ -495,7 +495,7 @@ NSString *const SSZipArchiveErrorDomain = @"SSZipArchiveErrorDomain";
                         if (!removeSuccess)
                         {
                             NSString *message = [NSString stringWithFormat:@"Failed to delete existing symbolic link at \"%@\"", error.localizedDescription];
-                            NSLog(@"[SSZipArchive] %@", message);
+//                            NSLog(@"[SSZipArchive] %@", message);
                             success = NO;
                             unzippingError = [NSError errorWithDomain:SSZipArchiveErrorDomain code:error.code userInfo:@{NSLocalizedDescriptionKey: message}];
                         }
@@ -510,7 +510,7 @@ NSString *const SSZipArchiveErrorDomain = @"SSZipArchiveErrorDomain";
                 {
                     // Bubble the error up to the completion handler
                     NSString *message = [NSString stringWithFormat:@"Failed to create symbolic link at \"%@\" to \"%@\" - symlink() error code: %d", fullPath, destinationPath, errno];
-                    NSLog(@"[SSZipArchive] %@", message);
+//                    NSLog(@"[SSZipArchive] %@", message);
                     success = NO;
                     unzippingError = [NSError errorWithDomain:NSPOSIXErrorDomain code:symlinkError userInfo:@{NSLocalizedDescriptionKey: message}];
                 }
@@ -551,10 +551,10 @@ NSString *const SSZipArchiveErrorDomain = @"SSZipArchiveErrorDomain";
         NSError * err = nil;
         for (NSDictionary * d in directoriesModificationDates) {
             if (![[NSFileManager defaultManager] setAttributes:@{NSFileModificationDate: d[@"modDate"]} ofItemAtPath:d[@"path"] error:&err]) {
-                NSLog(@"[SSZipArchive] Set attributes failed for directory: %@.", d[@"path"]);
+//                NSLog(@"[SSZipArchive] Set attributes failed for directory: %@.", d[@"path"]);
             }
             if (err) {
-                NSLog(@"[SSZipArchive] Error setting directory file modification date attribute: %@",err.localizedDescription);
+//                NSLog(@"[SSZipArchive] Error setting directory file modification date attribute: %@",err.localizedDescription);
             }
         }
     }
